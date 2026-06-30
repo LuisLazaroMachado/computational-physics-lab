@@ -210,16 +210,6 @@ def mostrar():
             return "0,000"
         return formato_3cs(theta)
 
-
-    # ---------------------------------------------------------
-    # Crear figura única
-    # ---------------------------------------------------------
-
-    fig = plt.figure(figsize=(12, 6.5))
-
-    # Eje principal de la gráfica
-    ax = fig.add_axes([0.08, 0.18, 0.72, 0.74])
-
     # Estado actual
     modo_actual = ["Trayectoria"]
 
@@ -443,9 +433,6 @@ def mostrar():
 
         aplicar_formato_grafica(ax)
 
-        fig.canvas.draw_idle()
-
-
     # ---------------------------------------------------------
     # Gráfica 2: evolución angular θ vs x
     # ---------------------------------------------------------
@@ -486,9 +473,6 @@ def mostrar():
         ax.legend(loc="upper left", fontsize=10, framealpha=0.95)
 
         aplicar_formato_grafica(ax)
-
-        fig.canvas.draw_idle()
-
 
     # ---------------------------------------------------------
     # Gráfica 3: animación interactiva del espejismo
@@ -606,7 +590,7 @@ def mostrar():
 
         aplicar_formato_grafica(ax)
 
-        fig.canvas.draw_idle()
+
 
 
     # ---------------------------------------------------------
@@ -680,27 +664,40 @@ def mostrar():
             r"$\theta$ = " + formato_3cs(theta_deg) + "°"
         )
 
-        fig.canvas.draw_idle()
-
-
     # ---------------------------------------------------------
     # Estado inicial
     # ---------------------------------------------------------
 
-    # Widgets de Streamlit reemplazan los botones y slider de matplotlib
-    vista = st.radio("Vista:", ["y vs x", "θ vs x", "Animación"], horizontal=True)
-    x_st = float(x_vals.min())
-    if vista == "Animación":
-        x_st = st.slider("Posición x (m)", float(x_vals.min()), float(x_vals.max()), float(x_vals.min()))
+    # ---------------------------------------------------------
+    # Gráfica 1: trayectoria y vs x
+    # ---------------------------------------------------------
+    fig1 = plt.figure(figsize=(12, 6.5))
+    ax = fig1.add_axes([0.08, 0.12, 0.88, 0.80])
+    mostrar_trayectoria()
+    st.pyplot(fig1)
+    plt.close(fig1)
 
     # ---------------------------------------------------------
-    # Estado inicial
+    # Gráfica 2: evolución angular θ vs x
     # ---------------------------------------------------------
-    if vista == "y vs x":
-        mostrar_trayectoria()
-    elif vista == "θ vs x":
-        mostrar_angulo()
-    else:
-        mostrar_animacion()
-        actualizar_animacion(x_st)
-    st.pyplot(fig)
+    fig2 = plt.figure(figsize=(12, 6.5))
+    ax = fig2.add_axes([0.08, 0.12, 0.88, 0.80])
+    mostrar_angulo()
+    st.pyplot(fig2)
+    plt.close(fig2)
+
+    # ---------------------------------------------------------
+    # Gráfica 3: animación interactiva con slider
+    # ---------------------------------------------------------
+    x_st = st.slider(
+        "Posición x (m)",
+        float(x_vals.min()),
+        float(x_vals.max()),
+        float(x_vals.min())
+    )
+    fig3 = plt.figure(figsize=(12, 6.5))
+    ax = fig3.add_axes([0.08, 0.12, 0.88, 0.80])
+    mostrar_animacion()
+    actualizar_animacion(x_st)
+    st.pyplot(fig3)
+    plt.close(fig3)
