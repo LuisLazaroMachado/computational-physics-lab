@@ -252,7 +252,27 @@ Necesito **integrar** la presión a lo largo de toda la altura.
     # ==========================================================================
     st.markdown("---")
     st.markdown("### 📐 ¿De dónde salen las fórmulas?")
+    st.info("""
+    Antes de ver las ecuaciones, definamos las variables que aparecerán.
 
+    • L = longitud del dique (m)
+
+    • H = altura total del fluido (m)
+
+    • y = posición vertical medida desde la base (m)
+
+    • ρ(y) = densidad del fluido
+
+    • g = gravedad (9.81 m/s²)
+
+    • dF = fuerza sobre una pequeña franja del dique
+
+    • dy = espesor infinitesimal de esa franja
+    """)
+
+    st.markdown("""
+    Con estas variables definidas, ahora podemos construir el modelo matemático paso a paso.
+    """)
     col_f1, col_f2 = st.columns([1, 1])
 
     with col_f1:
@@ -267,7 +287,7 @@ En este fluido la densidad **no es constante** — varía con la altura `y`
 según la función de densidad del enunciado:
 """)
         st.latex(r"\rho(y) = 80 \cdot (0{,}25y^3 - y + 10)")
-
+        st.caption("📌 Este polinomio no se deduce: es el dato de densidad que da el enunciado del problema. Otro caso tendría otra función distinta.")
     with col_f2:
         st.markdown("""
 **Paso 2 — Fuerza diferencial**
@@ -360,7 +380,8 @@ como un trapecio:
         st.success(f"✅ Con n={n} trapecios el error es {error:.4f}% — dentro del límite del 2%.")
     else:
         st.warning(f"⚠️ Con n={n} trapecios el error es {error:.4f}% — supera el 2%. Aumentá n.")
-
+        h_actual = altura / n
+        st.caption(f"↳ Con n={n}, cada trapecio mide h={h_actual:.4f} m de ancho. Entre más grande n, más chico h, y menor el error — porque los trapecios se ajustan mejor a la curva real.")
     # ==========================================================================
     # GRÁFICAS
     # ==========================================================================
@@ -508,6 +529,9 @@ como un trapecio:
         ctx.beginPath(); ctx.moveTo(12,base_y); ctx.lineTo(12,base_y-altura*escala_y); ctx.stroke();
         ctx.fillStyle="white"; ctx.font="13px Arial";
         ctx.fillText("H="+altura.toFixed(1)+"m", 2, base_y-altura*escala_y/2);
+        ctx.fillStyle="#ffdd55"; ctx.font="11px Arial";
+        ctx.fillText("y=0", 2, base_y+4);
+        ctx.fillText("y=H", 2, base_y-altura*escala_y-4);
         ctx.beginPath(); ctx.moveTo(20,base_y+8); ctx.lineTo(dique_x,base_y+8); ctx.stroke();
         ctx.fillText("L="+longitud.toFixed(1)+"m", 20+(dique_x-20)/2-20, base_y+20);
         for (let i=0; i<5; i++) {{
@@ -529,7 +553,7 @@ como un trapecio:
         }}
         flechas = flechas.filter(f => f.progreso < f.largo_max+20);
         tiempo++;
-        const obj = Math.ceil((n/1000)*40);
+        const obj = Math.min(40, Math.ceil((presionMax / 50000) * 25));
         if (flechas.length < obj) {{
             const idx=Math.floor(Math.random()*presiones.length);
             const yi=altura*(idx+0.5)/presiones.length;
@@ -567,11 +591,11 @@ como un trapecio:
 
     col_c1, col_c2 = st.columns(2)
     with col_c1:
-        st.success("""
+        st.success(f"""
 **¿Se cumplió el objetivo?**
-Sí. Calculé la fuerza total sobre el dique usando la Regla del Trapecio
-y la validé contra la solución teórica exacta obteniendo un error < 2%
-con solo n = 6 trapecios.
+Sí. Con los parámetros actuales (n = {n} trapecios) obtuve una fuerza de
+{F_trap:,.2f} N frente a los {F_teo:,.2f} N de la solución teórica,
+con un error de {error:.4f}% — por debajo del límite del 2% exigido.
 """)
         st.info("""
 **¿Por qué el error es tan bajo con n pequeño?**
