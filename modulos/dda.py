@@ -63,121 +63,93 @@ def porcentaje_error(valor_aprox, valor_teorico):
 def mostrar():
 
     # ==========================================================================
-    # DRAWER LATERAL
-    # Muestra únicamente el código matemático principal utilizado en este módulo.
-    # Durante la exposición permite señalar exactamente dónde se implementa
-    # cada una de las fórmulas explicadas.
+    # SIDEBAR — CÓDIGO MATEMÁTICO PARA LA EXPOSICIÓN
     # ==========================================================================
-    codigo_matematico = '''
-# CONSTANTE
-g = 9.81  # m/s²
 
-# INTEGRANDO: fuerza diferencial por unidad de altura
-def integrando(y, L, H):
-    return 80.0 * g * L * (0.250 * y**3 - y + 10.0) * (H - y)
+    with st.sidebar:
 
-# REGLA DEL TRAPECIO: suma de áreas trapezoidales
-def fuerza_trapecio(L, H, n):
-    a = 0.0
-    b = H
-    h = (b - a) / n
+        st.divider()
 
-    suma = integrando(a, L, H) + integrando(b, L, H)
+        st.subheader("1️⃣ Parámetros del problema")
+        st.code("""
+g = 9.81        # gravedad (m/s²)
 
-    for i in range(1, n):
-        yi = a + i * h
-        suma += 2.0 * integrando(yi, L, H)
+L = longitud    # longitud del dique (m)
+H = altura      # altura del fluido (m)
 
-    return (h / 2.0) * suma
+n = número de trapecios
+h = H/n         # tamaño del intervalo
+        """, language="python")
 
-# SOLUCIÓN TEÓRICA EXACTA
-def fuerza_teorica(L, H):
-    return 80.0 * g * L * (0.0125 * H**3 - H / 6.0 + 5.0) * H**2
 
-# PORCENTAJE DE ERROR
-def porcentaje_error(valor_aprox, valor_teorico):
-    return abs((valor_teorico - valor_aprox) / valor_teorico) * 100.0
-'''
+        st.divider()
 
-    drawer_html = f"""
-    <style>
-    #drawer-wrapper {{
-        position: fixed;
-        top: 80px;
-        left: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: flex-start;
-    }}
-    #drawer-panel {{
-        width: 0px;
-        overflow: hidden;
-        transition: width 0.35s ease;
-        background: #1e1e2e;
-        border-radius: 0 12px 12px 0;
-        box-shadow: 4px 0 18px rgba(0,0,0,0.5);
-    }}
-    #drawer-panel.open {{
-        width: 440px;
-    }}
-    #drawer-inner {{
-        width: 440px;
-        padding: 16px;
-        color: #cdd6f4;
-        font-family: monospace;
-        font-size: 12.5px;
-        line-height: 1.6;
-        white-space: pre-wrap;
-        max-height: 80vh;
-        overflow-y: auto;
-    }}
-    #drawer-btn {{
-        width: 32px;
-        min-height: 90px;
-        background: #313244;
-        color: #cdd6f4;
-        border: none;
-        border-radius: 0 8px 8px 0;
-        cursor: pointer;
-        font-size: 13px;
-        writing-mode: vertical-rl;
-        padding: 10px 6px;
-        box-shadow: 4px 0 10px rgba(0,0,0,0.4);
-        transition: background 0.2s;
-        letter-spacing: 1px;
-    }}
-    #drawer-btn:hover {{ background: #45475a; }}
-    #drawer-title {{
-        color: #89b4fa;
-        font-size: 13px;
-        font-weight: bold;
-        margin-bottom: 12px;
-        border-bottom: 1px solid #45475a;
-        padding-bottom: 6px;
-    }}
-    </style>
+        st.subheader("2️⃣ Densidad variable del fluido")
+        st.code("""
+def densidad(y):
+    return 80*(0.250*y**3 - y + 10)
+        """, language="python")
 
-    <div id="drawer-wrapper">
-        <div id="drawer-panel">
-            <div id="drawer-inner">
-                <div id="drawer-title">📐 Código matemático — dda.py</div>
-<pre>{codigo_matematico}</pre>
-            </div>
-        </div>
-        <button id="drawer-btn" onclick="toggleDrawer()">📄 VER CÓDIGO</button>
-    </div>
 
-    <script>
-    function toggleDrawer() {{
-        const panel = document.getElementById('drawer-panel');
-        const btn   = document.getElementById('drawer-btn');
-        panel.classList.toggle('open');
-        btn.textContent = panel.classList.contains('open') ? '✖ CERRAR' : '📄 VER CÓDIGO';
-    }}
-    </script>
-    """
+        st.divider()
 
-    components.html(drawer_html, height=500)
+        st.subheader("3️⃣ Presión hidrostática")
+        st.code("""
+P(y) = ρ(y) · g · (H-y)
+
+donde:
+
+ρ(y)=80(0.25y³-y+10)
+        """, language="python")
+
+
+        st.divider()
+
+        st.subheader("4️⃣ Fuerza diferencial")
+        st.code("""
+def integrando(y,L,H):
+
+    return (
+        80*g*L*
+        (0.250*y**3-y+10)*
+        (H-y)
+    )
+        """, language="python")
+
+
+        st.divider()
+
+        st.subheader("5️⃣ Regla del Trapecio")
+        st.code("""
+h = H/n
+
+F = (h/2)*[
+f(y0)
++2f(y1)
++...
++2f(yn-1)
++f(yn)
+]
+        """, language="python")
+
+
+        st.divider()
+
+        st.subheader("6️⃣ Solución teórica y error")
+        st.code("""
+F_teo =
+80*g*L*
+(0.0125*H**3-H/6+5)
+*H**2
+
+
+error =
+abs(F_teo-F_num)
+/
+F_teo
+*100
+        """, language="python")
+
 
     # ==========================================================================
     # BLOQUE 1 — INTRODUCCIÓN Y CONTEXTO
@@ -196,6 +168,20 @@ El problema es que **la presión no es constante**: cuanto más abajo, mayor
 presión. Eso significa que no puedo simplemente multiplicar presión × área.
 Necesito **integrar** la presión a lo largo de toda la altura.
 """)
+
+    st.markdown("""
+    ### 📌 Variables del problema
+
+    | Variable | Significado | Valor |
+    |---|---|---|
+    | g | gravedad | 9.81 m/s² |
+    | L | longitud del dique | variable |
+    | H | altura del fluido | variable |
+    | ρ(y) | densidad variable | 80(0.25y³-y+10) |
+    | n | número de trapecios | variable |
+    | F | fuerza total | calculada |
+    | Error | comparación | calculado |
+    """)
 
     # ==========================================================================
     # BLOQUE 2 — FUNDAMENTO FÍSICO Y MODELO MATEMÁTICO
@@ -490,7 +476,7 @@ como un trapecio:
         }}
         flechas = flechas.filter(f => f.progreso < f.largo_max+20);
         tiempo++;
-        const obj = Math.ceil((n/1000)*40);
+        const obj = Math.floor(10 + 5 * altura);
         if (flechas.length < obj) {{
             const idx=Math.floor(Math.random()*presiones.length);
             const yi=altura*(idx+0.5)/presiones.length;

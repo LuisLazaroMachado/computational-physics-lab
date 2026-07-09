@@ -82,7 +82,7 @@ u_next[-1] = 0.0  # extremo fijo
     st.markdown("# 〰️ DDC — Ondas estacionarias en una cuerda tensa")
     st.markdown("---")
     st.markdown("""
-### 🎻 ¿De qué trata esto?
+### 🎻 ¿De qué trata?
 
 Una **cuerda tensa fija en sus dos extremos** (como la cuerda de una guitarra)
 puede vibrar de formas muy específicas llamadas **modos normales**.
@@ -127,7 +127,7 @@ con la solución exacta analítica.
 <tr><td style="padding:8px;">T_per</td><td style="padding:8px;">Período de la onda (s)</td><td style="padding:8px;">calculado</td></tr>
 <tr><td style="padding:8px;">Δx</td><td style="padding:8px;">Paso espacial (m)</td><td style="padding:8px;">1,00×10⁻² m</td></tr>
 <tr><td style="padding:8px;">Δt</td><td style="padding:8px;">Paso temporal (s)</td><td style="padding:8px;">calculado (Courant)</td></tr>
-<tr><td style="padding:8px;">a</td><td style="padding:8px;">Número de Courant (adimensional)</td><td style="padding:8px;">debe ser ≤ 1</td></tr>
+<tr><td style="padding:8px;">a</td><td style="padding:8px;">Número de Courant (adimensional)</td><td style="padding:8px;">debe ser ≤ 1 para NO divergir</td></tr>
 </table>
 </div>
 """, unsafe_allow_html=True)
@@ -207,7 +207,7 @@ Con Δx = 0,01 m y a = 0,90·Δx/v se garantiza estabilidad en todos los casos.
 | Diferencias finitas 2do orden | `u_next[1:-1] = 2*u_curr[1:-1] - u_prev[1:-1] + a**2*(...)` |
 | Nodos fijos en los extremos | `u_next[0] = 0.0` y `u_next[-1] = 0.0` |
 """)
-    st.caption("📌 Abrir el sidebar para señalar esas líneas exactas durante la exposición.")
+    st.caption("📌 Abrir el sidebar para señalar esas líneas exactas.")
 
     # =========================================================
     # PARÁMETROS DEL SISTEMA (fijos)
