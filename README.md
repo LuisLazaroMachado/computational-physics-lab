@@ -23,6 +23,8 @@ pip install -r requirements.txt
 
 ```bash
 streamlit run app.py
+or
+python -m streamlit run app.py
 ```
 
 ## Estructura
@@ -39,4 +41,3 @@ Fisica_CC_TF/
 
 - Python
 - Streamlit
-

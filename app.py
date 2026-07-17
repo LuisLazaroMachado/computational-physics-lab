@@ -1,4 +1,6 @@
 import streamlit as st
+from modulos import inicio, dda, ddb, ddc, ddd
+
 
 st.set_page_config(
     page_title="Física para Ciencias de la Computación",
@@ -7,48 +9,49 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+
+SECCIONES = [
+    "🏠 Inicio",
+    "📐 DDA — Fuerza hidráulica",
+    "⚡ DDB — Campo eléctrico",
+    "〰️ DDC — Ondas estacionarias",
+    "🌅 DDD — Espejismo óptico",
+]
+
+
+PAGINAS = {
+    "🏠 Inicio": inicio,
+    "📐 DDA — Fuerza hidráulica": dda,
+    "⚡ DDB — Campo eléctrico": ddb,
+    "〰️ DDC — Ondas estacionarias": ddc,
+    "🌅 DDD — Espejismo óptico": ddd,
+}
+
+
 # ── Menú lateral ──────────────────────────────────────────────────────────────
 st.sidebar.title("🔬 Física — Simulaciones")
 st.sidebar.markdown("---")
+
+
 if "ir_a" in st.session_state:
     st.session_state["seccion"] = st.session_state.pop("ir_a")
+
+
 if "seccion" not in st.session_state:
     st.session_state["seccion"] = "🏠 Inicio"
 
+
 seccion = st.sidebar.radio(
     "Selecciona la entrega:",
-    [
-        "🏠 Inicio",
-        "📐 DDA — Fuerza hidráulica",
-        "⚡ DDB — Campo eléctrico",
-        "〰️ DDC — Ondas estacionarias",
-        "🌅 DDD — Espejismo óptico",
-    ],
-    index=[
-        "🏠 Inicio",
-        "📐 DDA — Fuerza hidráulica",
-        "⚡ DDB — Campo eléctrico",
-        "〰️ DDC — Ondas estacionarias",
-        "🌅 DDD — Espejismo óptico",
-    ].index(st.session_state["seccion"]),
+    SECCIONES,
+    index=SECCIONES.index(st.session_state["seccion"]),
     key="seccion",
 )
+
+
 st.sidebar.markdown("---")
 st.sidebar.caption("Física para Ciencias de la Computación")
 
+
 # ── Enrutamiento ──────────────────────────────────────────────────────────────
-if seccion == "🏠 Inicio":
-    from modulos import inicio
-    inicio.mostrar()
-elif seccion == "📐 DDA — Fuerza hidráulica":
-    from modulos import dda
-    dda.mostrar()
-elif seccion == "⚡ DDB — Campo eléctrico":
-    from modulos import ddb
-    ddb.mostrar()
-elif seccion == "〰️ DDC — Ondas estacionarias":
-    from modulos import ddc
-    ddc.mostrar()
-elif seccion == "🌅 DDD — Espejismo óptico":
-    from modulos import ddd
-    ddd.mostrar()
+PAGINAS[seccion].mostrar()
