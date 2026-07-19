@@ -1,43 +1,50 @@
-# Física Computacional - Trabajo Final
+# Computational Physics Lab
 
-## Descripción
+Interactive computational physics simulations built with Python and Streamlit.
 
-Proyecto de simulación física desarrollado en Python utilizando Streamlit.
+## Features
 
-## Requisitos
+- Hydraulic force on a dam
+- Electric field of a charged rod
+- Standing waves on a string
+- Optical mirage simulation
+
+## Requirements
 
 - Python 3.12+
-- Dependencias del archivo `requirements.txt`
+- Dependencies listed in `requirements.txt`
 
-## Instalación
-
-Clonar el repositorio:
+## Installation
 
 ```bash
-git clone https://github.com/LuisLazaroMachado/Fisica_CC_TF.git
-cd Fisica_CC_TF
+git clone https://github.com/LuisLazaroMachado/computational-physics-lab.git
+cd computational-physics-lab
 pip install -r requirements.txt
 ```
 
-## Ejecución
+## Run
 
 ```bash
 streamlit run app.py
+```
+
 or
+
+```bash
 python -m streamlit run app.py
 ```
 
-## Estructura
+## Project Structure
 
 ```
-Fisica_CC_TF/
+computational-physics-lab/
 ├── app.py
 ├── requirements.txt
 ├── README.md
 └── modulos/
 ```
 
-## Tecnologías
+## Technologies
 
 - Python
 - Streamlit
